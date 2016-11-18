@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmri.bpt.service.result.getsingleuelog.mapper.GetSingleUeLogMapper">
+
+	
+	<select id="selectsingleuedata" parameterType="com.cmri.bpt.common.entity.CaseUeVO" resultType="com.cmri.bpt.common.entity.SingleUeLogPO">
+	    select
+	    	 *
+	    from
+	    	co_singleuelog
+	    where
+	    	casename = #{casename,jdbcType=VARCHAR} and
+	    	user_id=#{user_id,jdbcType=INTEGER} and
+			ue_id=#{ue_id,jdbcType=VARCHAR}
+		limit 1
+	    	
+	</select>
+	
+	
+	<select id="selectsingleuecount" parameterType="com.cmri.bpt.common.entity.CaseUeVO" resultType="INTEGER">
+	    select
+	    	count(*)
+	    from
+	    	co_singleuelog
+	    where
+	    	casename = #{casename,jdbcType=VARCHAR} and
+	    	user_id=#{user_id,jdbcType=INTEGER} and
+			ue_id=#{ue_id,jdbcType=VARCHAR}
+	    	
+	</select>
+	
+	<insert id="insertSingleUeLog" parameterType="com.cmri.bpt.common.entity.SingleUeLogPO">
+		insert into co_singleuelog(
+			casename,
+			user_id,
+			ue_id,
+			ftpdown_speed,
+			ftpup_speed,
+			weixin_text_delay,
+			weixin_text_success,
+			weixin_text_fail,
+			weixin_text_rate,
+			web_delay,
+			web_success,
+			web_fail,
+			web_rate,
+			call_delay,
+			call_success,
+			call_fail,
+			call_rate
+		)
+		values(
+			#{casename,jdbcType=VARCHAR},
+			#{user_id,jdbcType=INTEGER},
+			#{ue_id,jdbcType=VARCHAR},
+			#{ftpdown_speed,jdbcType=FLOAT},
+			#{ftpup_speed,jdbcType=FLOAT},
+			#{weixin_text_delay,jdbcType=INTEGER},
+			#{weixin_text_success,jdbcType=INTEGER},
+			#{weixin_text_fail,jdbcType=INTEGER},
+			#{weixin_text_rate,jdbcType=FLOAT},
+			#{web_delay,jdbcType=INTEGER},
+			#{web_success,jdbcType=INTEGER},
+			#{web_fail,jdbcType=INTEGER},
+			#{web_rate,jdbcType=FLOAT},
+			#{call_delay,jdbcType=INTEGER},
+			#{call_success,jdbcType=INTEGER},
+			#{call_fail,jdbcType=INTEGER},
+			#{call_rate,jdbcType=FLOAT}
+		
+			
+		)
+	
+	</insert>
+	
+	
+   <update id="updateSingleUeLog" parameterType="com.cmri.bpt.common.entity.SingleUeLogPO">
+		update co_singleuelog
+		set
+			casename = #{casename,jdbcType=VARCHAR},
+			user_id = #{user_id,jdbcType=INTEGER},
+			ue_id = #{ue_id,jdbcType=VARCHAR},
+			ftpdown_speed = #{ftpdown_speed,jdbcType=FLOAT},
+			ftpup_speed = #{ftpup_speed,jdbcType=FLOAT},
+			weixin_text_delay=#{weixin_text_delay,jdbcType=INTEGER},
+			weixin_text_success=#{weixin_text_success,jdbcType=INTEGER},
+			weixin_text_fail=#{weixin_text_fail,jdbcType=INTEGER},
+			weixin_text_rate=#{weixin_text_rate,jdbcType=FLOAT},
+			web_delay=#{web_delay,jdbcType=INTEGER},
+			web_success=#{web_success,jdbcType=INTEGER},
+			web_fail=#{web_fail,jdbcType=INTEGER},
+			web_rate=#{web_rate,jdbcType=FLOAT},
+			call_delay=#{call_delay,jdbcType=INTEGER},
+			call_success=#{call_success,jdbcType=INTEGER},
+			call_fail=#{call_fail,jdbcType=INTEGER},
+			call_rate=#{call_rate,jdbcType=FLOAT}
+		
+
+		where
+			casename = #{casename,jdbcType=VARCHAR} and
+	    	user_id=#{user_id,jdbcType=INTEGER} and
+			ue_id=#{ue_id,jdbcType=VARCHAR}
+	</update>
+	
+
+
+</mapper>

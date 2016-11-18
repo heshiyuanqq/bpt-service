@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.cmri.bpt.service.result.pic_weixin.mapper.WeiXinPictureMapper">
+	<insert id="saveWeiXinPicture" parameterType="com.cmri.bpt.common.entity.WeiXinPicturePO">
+		insert into weixin_picture(
+	    	case_name,
+	    	type,
+	    	x_data,
+	    	y1_data,
+	    	y2_data,
+	    	y3_data,
+	    	start_time
+	    	
+	    )
+		values(
+			#{case_name,jdbcType=VARCHAR},
+			#{type,jdbcType=VARCHAR},
+			#{x_data,jdbcType=INTEGER},
+			#{y1_data,jdbcType=INTEGER},
+			#{y2_data,jdbcType=FLOAT},
+			#{y3_data,jdbcType=INTEGER},
+			#{start_time,jdbcType=VARCHAR}
+		
+			)
+	</insert>
+	
+	<select id="selectWeiXinPicture" parameterType="com.cmri.bpt.common.entity.WeiXinTypePO" resultType="com.cmri.bpt.common.entity.WeiXinPicturePO">
+		select *
+		from 
+			weixin_picture
+		where 
+			case_name = #{case_name,jdbcType=VARCHAR} and 
+			type=#{type,jdbcType=VARCHAR}
+			
+		ORDER BY x_data						
+	</select>
+	
+</mapper>

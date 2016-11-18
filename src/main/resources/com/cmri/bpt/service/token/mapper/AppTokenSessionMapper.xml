@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmri.bpt.service.token.mapper.AppTokenSessionMapper">
+
+	<resultMap id="TokenResultMap" type="com.cmri.bpt.entity.auth.AppTokenSession">
+		<result column="id" property="id" jdbcType="BIGINT" />
+		<result column="app_id" property="appId" jdbcType="BIGINT" />
+		<result column="user_id" property="userId" jdbcType="BIGINT" />
+		<result column="sys_id" property="sysId" jdbcType="BIGINT" />
+		<result column="tag" property="tag" jdbcType="VARCHAR" />
+		<result column="token" property="token" jdbcType="VARCHAR" />
+		<result column="lastIp" property="lastIp" jdbcType="VARCHAR" />
+		<result column="lastLng" property="lastLng" jdbcType="VARCHAR" />
+		<result column="lastLat" property="lastLat" jdbcType="VARCHAR" />
+		<result column="lastAddress" property="lastAddress" jdbcType="VARCHAR" />
+		<result column="xpp_id" property="xppId" jdbcType="VARCHAR" />
+		<result column="lastAccessTime" property="lastAccessTime"
+			jdbcType="TIMESTAMP" />
+		<result column="online" property="online" jdbcType="BOOLEAN" />
+		<result column="phoneType" property="phoneType" jdbcType="VARCHAR" />
+		<result column="phoneNumber" property="phoneNumber" jdbcType="VARCHAR" />
+		<result column="box" property="box" jdbcType="VARCHAR" />
+
+	</resultMap>
+
+	<insert id="insertSession" parameterType="com.cmri.bpt.entity.auth.AppTokenSession"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into co_apptokensession
+		(
+		app_id, user_id, sys_id,tag,token, lastIp, lastLng, lastLat,
+		lastAddress,
+		xpp_id, lastAccessTime,online,phoneType,phoneNumber,box)
+		values
+		( #{appId}, #{userId},
+		#{sysId},#{tag},
+		#{token}, #{lastIp},
+		#{lastLng}, #{lastLat},
+		#{lastAddress},
+		#{xppId},
+		#{lastAccessTime},
+		#{online},
+		#{phoneType},
+		#{phoneNumber},
+		#{box})
+	</insert>
+
+	<update id="updateSession" parameterType="com.cmri.bpt.entity.auth.AppTokenSession">
+		update co_apptokensession
+		<set>
+			app_id = #{appId},
+			user_id = #{userId},
+			sys_id = #{sysId},
+			tag=#{tag},
+			token =
+			#{token},
+			lastIp = #{lastIp},
+			lastLng = #{lastLng},
+			lastLat =
+			#{lastLat},
+			lastAddress = #{lastAddress},
+			xpp_id = #{xppId},
+			lastAccessTime = #{lastAccessTime},
+			online=#{online},
+			phoneType=#{phoneType},
+			phoneNumber =#{phoneNumber},
+			box=#{box}
+		</set>
+		where id = #{id}
+	</update>
+
+	<select id="getMaxSysId" parameterType="Integer">
+		select max(sys_id) from
+		co_apptokensession where user_id=#{id}
+	</select>
+
+	<select id="getTags" parameterType="Integer" resultType="String">
+		select
+		distinct tag from
+		co_apptokensession where user_id=#{id} and tag is not
+		null
+	</select>
+
+	<select id="getXppIds" resultType="String">
+		select xpp_id from
+		co_apptokensession where user_id=#{userId} and tag=#{tag}
+	</select>
+
+
+
+
+
+
+
+	<update id="updateTag">
+		update co_apptokensession
+		<set>
+			tag=#{tag}
+		</set>
+		where id in
+		<foreach collection="array" item="id" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</update>
+
+	<update id="updateBox">
+		update co_apptokensession
+		<set>
+			box=#{box}
+		</set>
+		where id in
+		<foreach collection="array" item="id" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</update>
+
+	<update id="updateOnline">
+		update co_apptokensession
+		<set>
+			online=#{online}
+		</set>
+		where id in
+		<foreach collection="array" item="id" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</update>
+
+	<delete id="deleteSession" parameterType="com.cmri.bpt.entity.auth.AppTokenSession">
+		delete from
+		co_apptokensession
+		where id = #{id}
+	</delete>
+
+	<select id="selectByToken" parameterType="String" resultMap="TokenResultMap">
+		select * from co_apptokensession
+		where token = #{token}
+	</select>
+
+	<select id="queryAll" resultMap="TokenResultMap">
+		select * from co_apptokensession
+	</select>
+
+	<select id="queryByUserId" resultMap="TokenResultMap">
+		select * from
+		co_apptokensession where user_id =#{id}
+	</select>
+
+
+	<select id="queryByIds" resultMap="TokenResultMap">
+		select * from
+		co_apptokensession
+		where id in
+		<foreach collection="array" item="id" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</select>
+
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmri.bpt.service.result.pic_cellchange.mapper.CellChangePictureMapper">
+	<insert id="saveCellChangePicture" parameterType="com.cmri.bpt.common.entity.CellChangePicturePO">
+		insert into cellchange_picture(
+	    	case_name,
+	    	x_data,
+	    	y1_data,
+	    	y2_data,
+	    	y3_data,
+	    	y4_data,
+	    	start_time
+	    	
+	    )
+		values(
+			#{case_name,jdbcType=VARCHAR},
+			#{x_data,jdbcType=INTEGER},
+			#{y1_data,jdbcType=INTEGER},
+			#{y2_data,jdbcType=FLOAT},
+			#{y3_data,jdbcType=FLOAT},
+			#{y4_data,jdbcType=FLOAT},
+			#{start_time,jdbcType=VARCHAR}
+		
+			)
+	</insert>
+	
+	<select id="selectCellChangePicture" parameterType="String" resultType="com.cmri.bpt.common.entity.CellChangePicturePO">
+		select *
+		from 
+			cellchange_picture
+		where 
+			case_name = #{case_name,jdbcType=VARCHAR}
+		ORDER BY x_data						
+	</select>
+	
+</mapper>

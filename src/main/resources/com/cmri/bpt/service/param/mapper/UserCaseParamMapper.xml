@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmri.bpt.service.param.mapper.UserCaseParamMapper">
+	<delete id="deleteUserCaseParamByUserIdWithCondition"
+		parameterType="com.cmri.bpt.entity.po.UserCaseParamPO">
+		DELETE FROM
+			co_user_param
+		WHERE
+			userid = #{userid,jdbcType=INTEGER}
+		<if test="strParamAllName != null">
+			AND param_all_name = #{strParamAllName,jdbcType=VARCHAR}
+		</if>
+		<if test="strActionName != null">
+			AND action_name = #{strActionName,jdbcType=VARCHAR}
+		</if>
+		<if test="strParamId != null">
+			AND param_id = #{strParamId,jdbcType=VARCHAR}
+		</if>
+	</delete>
+	
+	<insert id="insertUserCaseParam" parameterType="com.cmri.bpt.entity.po.UserCaseParamPO">
+		INSERT INTO 
+			co_user_param(userid,param_all_name,value,business_son_name,action_name,param_id)
+		VALUES(
+			#{userid,jdbcType=INTEGER},
+			#{strParamAllName,jdbcType=VARCHAR},
+			#{strValue,jdbcType=VARCHAR},
+			#{strBusinessSonName,jdbcType=VARCHAR},
+			#{strActionName,jdbcType=VARCHAR},
+			#{strParamId,jdbcType=VARCHAR}
+		)
+	</insert>
+	<select id="selectUserCaseParamByUserIdWithCondition"
+				parameterType="com.cmri.bpt.entity.po.UserCaseParamPO" 
+				resultType="com.cmri.bpt.entity.po.UserCaseParamPO">
+		SELECT
+			userid userid,
+			param_all_name strParamAllName,
+			value strValue,
+			business_son_name strBusinessSonName,
+			action_name strActionName,
+			param_id strParamId
+		FROM
+			co_user_param
+		WHERE
+			userid = #{userid,jdbcType=INTEGER}
+		<if test="strParamAllName != null">
+			AND param_all_name = #{strParamAllName,jdbcType=VARCHAR}
+		</if>
+		<if test="strActionName != null">
+			AND action_name = #{strActionName,jdbcType=VARCHAR}
+		</if>
+		
+	</select>
+</mapper>

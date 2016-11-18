@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmri.bpt.service.user.mapper.ProvinceMapper">
+
+	<select id="queryParentProvinces" 
+		resultType="com.cmri.bpt.service.user.bo.Select2Domain">
+		SELECT t.id id,t.name TEXT FROM co_city t WHERE t.valid=1 AND t.level=1
+	</select>
+	
+	<select id="queryCityByProId" parameterType="long"
+	resultType="com.cmri.bpt.service.user.bo.Select2Domain">
+		SELECT t.id id,t.name TEXT FROM co_city t WHERE t.valid=1 AND t.level=2 and t.parent_id=#{id}
+	</select>
+	
+	<select id="queryIsEmptyCity" parameterType="int"
+	resultType="int">
+		SELECT count(1) FROM co_city t WHERE t.valid=1 AND  t.id=#{cityId}
+	</select>
+
+
+</mapper>

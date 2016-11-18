@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmri.bpt.service.user.mapper.UserMapper">
+
+	<resultMap id="UserResultMap" type="com.cmri.bpt.service.user.bo.User">
+		<result column="id" property="id" jdbcType="BIGINT" />
+		<result column="user_name" property="nickname" jdbcType="VARCHAR" />
+		<result column="phone_number" property="phoneNumber" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="salt" property="salt" jdbcType="VARCHAR" />
+		<result column="session_id" property="sessionId" jdbcType="VARCHAR" />
+		
+		<result column="city_id" property="cityId" jdbcType="BIGINT" />
+		
+		<result column="register_time" property="registerTime" jdbcType="TIMESTAMP" />
+		
+	</resultMap>
+
+	<insert id="insertUser" parameterType="com.cmri.bpt.service.user.bo.User"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into co_user
+		(user_name,phone_number,password,salt,city_id)
+		values
+		(#{nickname},#{phoneNumber},#{password},#{salt},#{cityId})
+	</insert>
+
+	<select id="selectUserByPhoneNumberAndSessionId" parameterType="com.cmri.bpt.service.user.bo.User"
+		resultMap="UserResultMap">
+		select * from co_user where phone_number = #{phoneNumber}
+		and session_id = #{sessionId}
+	</select>
+	
+	<select resultType="java.lang.Boolean" id="existUserByPhoneNumber">
+		select count(*) > 0 as `exist`
+		from co_user where phone_number = #{phoneNumber}
+	</select>
+	
+	<select id="selectById"	resultMap="UserResultMap">
+		select * from co_user where id = #{id}
+	</select>
+
+	<update id="updateSessionId" parameterType="com.cmri.bpt.service.user.bo.User">
+		update
+		co_user set
+		session_id = #{sessionId} where phone_number =
+		#{phoneNumber}
+	</update>
+
+	<update id="updateUser" parameterType="com.cmri.bpt.service.user.bo.User">
+		update co_user
+		<set>
+			<if test="nickname != null">
+				user_name = #{nickname},
+			</if>
+			<if test="salt != null">
+				salt = #{salt},
+			</if>
+			<if test="password != null">
+				password = #{password},
+			</if>			
+		</set>
+		where id = #{id}
+	</update>
+
+	<select id="selectUserByPhoneNumber" parameterType="String"
+		resultMap="UserResultMap">
+		select * from co_user where phone_number = #{phoneNumber}
+	</select>
+	
+	<select id="queryIsUniqueNickName" parameterType="String"
+		resultType="int">
+		select count(1) from co_user where user_name = #{nickname}
+	</select>
+
+	<select id="queryIsUniquePhoneNumber" parameterType="String"
+		resultType="int">
+		select count(1) from co_user where phone_number = #{phoneNumber}
+	</select>
+	
+	<insert id="insertRegUser" parameterType="com.cmri.bpt.service.user.bo.User"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into co_user
+		(user_name,phone_number,password,salt,city_id)
+		values
+		(#{nickname},#{phoneNumber},#{password},#{salt},#{cityId})
+	</insert>
+</mapper>

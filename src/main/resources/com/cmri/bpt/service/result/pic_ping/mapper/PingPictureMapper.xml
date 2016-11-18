@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmri.bpt.service.result.pic_ping.mapper.PingPictureMapper">
+	<insert id="savePingPicture" parameterType="com.cmri.bpt.common.entity.PingPicturePO">
+	    insert into ping_picture(
+	    	case_name,
+	    	x_data,
+	    	y1_data,
+	    	y2_data,
+	    	y3_data,
+	    	start_time
+	    )
+		values(
+			#{case_name,jdbcType=VARCHAR},
+			#{x_data,jdbcType=INTEGER},
+			#{y1_data,jdbcType=INTEGER},
+			#{y2_data,jdbcType=FLOAT},
+			#{y3_data,jdbcType=FLOAT},
+			#{start_time,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	
+	<select id="selectPingPicture" parameterType="String" resultType="com.cmri.bpt.common.entity.PingPicturePO">
+		select *
+		from 
+			ping_picture
+		where 
+			case_name = #{case_name,jdbcType=VARCHAR}
+		ORDER BY x_data
+			
+			
+	</select>
+	
+	
+	
+</mapper>

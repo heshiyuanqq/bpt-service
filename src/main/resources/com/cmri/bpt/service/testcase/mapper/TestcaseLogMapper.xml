@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmri.bpt.service.testcase.mapper.TestcaseLogMapper">
+
+	<resultMap id="ResultMap" type="com.cmri.bpt.entity.testcase.TestcaseLog">
+		<result column="id" property="id" jdbcType="BIGINT" />
+		<result column="appSessionId" property="appSessionId" jdbcType="BIGINT" />
+		<result column="testcase" property="testcase" jdbcType="VARCHAR" />
+		<result column="action" property="action" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR"
+			typeHandler="com.cmri.bpt.service.util.TestcaseStatusHandler" />
+
+	</resultMap>
+
+	<insert id="create" parameterType="com.cmri.bpt.entity.testcase.TestcaseLog"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into co_testcase_log
+		(
+		appSessionId, testcase,action,status)
+		values
+		(
+		#{appSessionId},
+		#{testcase},
+		#{action},#{status,typeHandler=com.cmri.bpt.service.util.TestcaseStatusHandler})
+	</insert>
+
+	<update id="updateBySessionId" parameterType="com.cmri.bpt.entity.testcase.TestcaseLog">
+		update co_testcase_log
+		<set>
+			<if test="testcase!= null and testcase!= '' ">
+				testcase = #{testcase},
+			</if>
+			<if test="action!= null and action!= '' ">
+				action = #{action},
+			</if>
+			<if test="status!= null and status!= '' ">
+				status =
+				#{status,typeHandler=com.cmri.bpt.service.util.TestcaseStatusHandler}
+			</if>
+		</set>
+		where appSessionId = #{appSessionId}
+	</update>
+
+	<delete id="delete" parameterType="com.cmri.bpt.entity.testcase.TestcaseLog">
+		delete from
+		co_testcase_log
+		where
+		id = #{id}
+	</delete>
+
+	<select id="exists" parameterType="Integer" resultType="Boolean">
+		select
+		count(*) from
+		co_testcase_log where appSessionId = #{appSessionId}
+	</select>
+
+	<select id="queryAll" resultMap="ResultMap">
+		select * from co_testcase_log
+	</select>
+
+	<select id="query" resultMap="ResultMap">
+		select * from co_testcase_log
+		where appSessionId in
+		<foreach collection="array" item="id" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</select>
+
+</mapper>

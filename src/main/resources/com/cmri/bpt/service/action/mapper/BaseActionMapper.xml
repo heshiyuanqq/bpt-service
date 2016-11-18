@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmri.bpt.service.action.mapper.BaseActionMapper">
+	
+	<select id="selectAllAction" resultType="com.cmri.bpt.entity.po.BaseActionPO">
+		select    	
+			action_id actionid,
+			action_name actionname,
+			business_name businessname,
+			business_son_name businesssonname
+		from co_base_action
+		where disable=0
+	</select>
+	
+</mapper>

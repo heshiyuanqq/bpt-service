@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmri.bpt.service.param.mapper.SysParamMapper">
+		<resultMap id="SysParamMap" type="com.cmri.bpt.entity.po.SysParamPO">
+				<result column="id" property="id" jdbcType="BIGINT" />
+				<result column="user_id" property="userId" jdbcType="BIGINT" />
+				<result column="ftp_ip" property="ftpIp" jdbcType="CHAR"  />
+				<result column="ntp_ip" property="ntpIp" jdbcType="CHAR"  />
+				<result column="duration" property="duration" jdbcType="BIGINT"  />
+		</resultMap>
+		
+		<select id="getListByCondition" parameterType="com.cmri.bpt.entity.po.SysParamPO" resultMap="SysParamMap">
+			SELECT 
+				*
+			FROM
+				co_sys_param
+			<where>
+				<if test="id != null">
+					AND id = #{id,jdbcType=BIGINT}
+				</if>
+				<if test="userId != null">
+					AND user_id = #{userId,jdbcType=BIGINT}
+				</if>
+				<if test="ftpIp != null">
+					AND ftp_ip = #{ftpIp,jdbcType=CHAR}
+				</if>
+				<if test="ntpIp != null">
+					AND ntp_ip = #{ntpIp,jdbcType=CHAR}
+				</if>
+				<if test="duration != null">
+					AND duration = #{duration,jdbcType=BIGINT}
+				</if>
+			</where>
+		</select>
+		
+		<insert id="save" parameterType="com.cmri.bpt.entity.po.SysParamPO"
+		useGeneratedKeys="true" keyProperty="id">
+				insert into co_sys_param
+				(user_id,ftp_ip,ntp_ip,duration)
+				values
+				(#{userId},#{ftpIp},#{ntpIp},#{duration})
+		</insert>
+		
+		<update id="update" parameterType="com.cmri.bpt.entity.po.SysParamPO">
+				update co_sys_param
+				<set>
+						user_id=#{userId},
+						ftp_ip=#{ftpIp},
+						ntp_ip=#{ntpIp},
+						duration=#{duration}
+				</set>
+				where id = #{id}
+	     </update>
+</mapper>

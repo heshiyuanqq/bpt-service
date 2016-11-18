@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmri.bpt.service.ue.mapper.AppStatusMapper">
+
+	<resultMap id="ResultMap" type="com.cmri.bpt.service.ue.bo.AppStatus">
+		<result column="id" property="id" jdbcType="BIGINT" />
+		<result column="app_session_id" property="appSessionId"
+			jdbcType="BIGINT" />
+		<result column="mode" property="mode" jdbcType="VARCHAR" />
+		<result column="cell" property="cell" jdbcType="VARCHAR" />
+		<result column="rxlevel" property="rxlevel" jdbcType="NUMERIC" />
+		<result column="task" property="task" jdbcType="VARCHAR" />
+		<result column="progress" property="progress" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="sys_id" property="sysId" jdbcType="BIGINT" />
+		<result column="tag" property="tag" jdbcType="VARCHAR" />
+		<result column="phoneType" property="phoneType" jdbcType="VARCHAR" />
+		<result column="cmd" property="cmd" jdbcType="VARCHAR" />
+		<result column="cmdState" property="cmdState" jdbcType="VARCHAR" />
+		<result column="online" property="online" jdbcType="BOOLEAN" />
+		<result column="ipv4" property="ipv4" jdbcType="VARCHAR" />
+		<result column="ipv6" property="ipv6" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<insert id="create" parameterType="com.cmri.bpt.service.ue.bo.AppStatus"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into co_appstatus
+		(
+		app_session_id, mode,cell,rxlevel,task,progress,status,cmd,cmdState,ipv4,ipv6)
+		values
+		(
+		#{appSessionId}, #{mode},
+		#{cell},#{rxlevel},
+		#{task}, #{progress},
+		#{status},
+		#{cmd},#{cmdState},#{ipv4},#{ipv6})
+	</insert>
+
+	<update id="updateBySessionId" parameterType="com.cmri.bpt.service.ue.bo.AppStatus">
+		update co_appstatus
+		<set>
+			mode = #{mode},
+			cell = #{cell},
+			rxlevel=#{rxlevel},
+			task = #{task},
+			progress
+			= #{progress},
+			status =
+			#{status},
+			cmd=#{cmd},
+			cmdState=#{cmdState},
+			ipv4=#{ipv4},
+			ipv6=#{ipv6}
+		</set>
+		where app_session_id = #{appSessionId}
+	</update>
+
+	<delete id="delete" parameterType="com.cmri.bpt.service.ue.bo.AppStatus">
+		delete from
+		co_appstatus
+		where
+		id = #{id}
+	</delete>
+
+	<delete id="deleteBySessionId" parameterType="Integer">
+		delete from
+		co_appstatus
+		where
+		app_session_id = #{appSessionId}
+	</delete>
+
+	<select id="exists" parameterType="Integer" resultType="Boolean">
+		select
+		count(*) from
+		co_appstatus where app_session_id = #{appSessionId}
+	</select>
+	
+	<select id="count" parameterType="Integer" resultType="Integer">
+		select
+		count(*) from
+		co_appstatus where app_session_id = #{appSessionId}
+	</select>
+
+	<select id="query" resultMap="ResultMap">
+		select
+		status.*,session.sys_id,session.tag,session.phoneType,session.online from
+		co_appstatus status left join
+		co_apptokensession session on
+		status.app_session_id = session.id
+		where
+		session.user_id = #{id}
+	</select>
+
+	<select id="queryAll" resultMap="ResultMap">
+		select
+		status.*,session.sys_id,session.tag,session.phoneType,session.online from
+		co_appstatus status left join
+		co_apptokensession session on
+		status.app_session_id = session.id
+	</select>
+
+
+</mapper>

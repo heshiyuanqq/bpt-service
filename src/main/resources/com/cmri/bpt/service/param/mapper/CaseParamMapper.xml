@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmri.bpt.service.param.mapper.CaseParamMapper">
+	<select id="selectParamByCond" parameterType="com.cmri.bpt.entity.po.BaseCaseParamPO" resultType="com.cmri.bpt.entity.po.BaseCaseParamPO">
+		SELECT
+			p.param_id paramid,
+			p.param_name paramname,
+			p.param_all_name paramallname,
+			p.business_son_name businesssonname,
+			p.id id,
+			p.default_value defaultvalue,
+			p.param_type intParamType,
+			p.param_verify strParamVerify,
+			a.action_name actionname
+		FROM 
+			co_base_action a,co_base_param p
+		WHERE 
+		 	a.business_son_name = p.business_son_name 
+		<if test="paramid != null">
+			AND p.param_id = #{paramid,jdbcType=VARCHAR}
+		</if>
+		<if test="paramallname != null">
+			AND p.param_all_name = #{paramallname,jdbcType=VARCHAR}
+		</if>
+		<if test="actionname != null">
+			AND a.action_name = #{actionname,jdbcType=VARCHAR}
+		</if>
+	</select>
+	
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmri.bpt.service.result.pic_ftp.mapper.FtpPictureMapper">
+	<insert id="saveFtpPicture" parameterType="com.cmri.bpt.common.entity.FtpPicturePO">
+		insert into ftp_picture(
+	    	case_name,
+	    	x_data,
+	    	y_data,
+	    	start_time,
+	    	ftp_type,
+	    	fail_num
+	    )
+		values(
+			#{case_name,jdbcType=VARCHAR},
+			#{x_data,jdbcType=INTEGER},
+			#{y_data,jdbcType=FLOAT},
+			#{start_time,jdbcType=VARCHAR},
+			#{ftp_type,jdbcType=VARCHAR},
+			#{fail_num,jdbcType=INTEGER}
+			)
+	</insert>
+	<select id="selectFtpPicture" parameterType="String" resultType="com.cmri.bpt.common.entity.FtpPicturePO">
+		select *
+		from 
+			ftp_picture
+		where 
+			case_name = #{case_name,jdbcType=VARCHAR}
+		ORDER BY x_data						
+	</select>
+	
+</mapper>

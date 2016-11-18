@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmri.bpt.service.result.pic_call.mapper.CallSuccessRateMapper">
+	<insert id="saveCallsuccessRate" parameterType="com.cmri.bpt.common.entity.CallSuccessRatePO">
+	    insert into call_successrate(
+	    	case_name,
+	    	x_time,
+	    	y_rate,
+	    	start_time
+	    )
+		values(
+			#{case_name,jdbcType=VARCHAR},
+			#{x_time,jdbcType=INTEGER},
+			#{y_rate,jdbcType=FLOAT},
+			#{start_time,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	
+	<select id="selectCallsuccessRate" parameterType="String" resultType="com.cmri.bpt.common.entity.CallSuccessRatePO">
+		select *
+		from 
+			call_successrate
+		where 
+			case_name = #{case_name,jdbcType=VARCHAR}
+		ORDER BY x_time
+			
+			
+	</select>
+	
+	
+	
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmri.bpt.service.result.pic_web.mapper.WebPictureMapper">
+	<insert id="saveWebPicture" parameterType="com.cmri.bpt.common.entity.WebPicturePO">
+		insert into web_picture(
+	    	case_name,
+	    	x_data,
+	    	y1_data,
+	    	y2_data,
+	    	y3_data,
+	    	start_time
+	    	
+	    )
+		values(
+			#{case_name,jdbcType=VARCHAR},
+			#{x_data,jdbcType=INTEGER},
+			#{y1_data,jdbcType=INTEGER},
+			#{y2_data,jdbcType=FLOAT},
+			#{y3_data,jdbcType=INTEGER},
+			#{start_time,jdbcType=VARCHAR}
+		
+			)
+	</insert>
+	
+	<select id="selectWebPicture" parameterType="String" resultType="com.cmri.bpt.common.entity.WebPicturePO">
+		select *
+		from 
+			web_picture
+		where 
+			case_name = #{case_name,jdbcType=VARCHAR}
+		ORDER BY x_data						
+	</select>
+	
+</mapper>

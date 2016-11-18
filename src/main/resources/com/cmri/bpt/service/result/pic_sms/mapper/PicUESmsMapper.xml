@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmri.bpt.service.result.pic_sms.mapper.PicUESmsMapper">
+	<insert id="savePicUESms" parameterType="com.cmri.bpt.common.entity.PicUESmsPO">
+	    insert into pic_ue_sms(
+	    	case_name,
+	    	x_data,
+	    	y_data,
+	    	start_time,
+	    	ue_location
+	    )
+		values(
+			#{case_name,jdbcType=VARCHAR},
+			#{x_data,jdbcType=INTEGER},
+			#{y_data,jdbcType=INTEGER},
+			#{start_time,jdbcType=CHAR},
+			#{ue_location,jdbcType=CHAR}
+		)
+	</insert>
+	
+	
+	<select id="selectPicUESmsByCaseName" parameterType="String" resultType="com.cmri.bpt.common.entity.PicUESmsPO">
+		select *
+		from 
+			pic_ue_sms
+		where 
+			case_name = #{case_name,jdbcType=VARCHAR}
+		ORDER BY x_data
+			
+			
+	</select>
+	
+	
+	
+</mapper>

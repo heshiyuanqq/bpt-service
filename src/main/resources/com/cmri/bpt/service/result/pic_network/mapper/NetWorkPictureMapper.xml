@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmri.bpt.service.result.pic_network.mapper.NetWorkPictureMapper">
+	<insert id="saveNetWorkPicture" parameterType="com.cmri.bpt.common.entity.NetWorkPicturePO">
+	    insert into network_picture(
+	    	case_name,
+	    	cell_type,
+	    	x_data,
+            y_data,
+            start_time
+	    )
+		values(
+			#{case_name,jdbcType=VARCHAR},
+			#{cell_type,jdbcType=VARCHAR},
+			#{x_data,jdbcType=INTEGER},
+			#{y_data,jdbcType=INTEGER},
+			#{start_time,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	
+	<select id="selectNetWorkPicture" parameterType="String" resultType="com.cmri.bpt.common.entity.NetWorkPicturePO">
+		select *
+		from 
+			network_picture
+		where 
+			case_name = #{case_name,jdbcType=VARCHAR}
+		ORDER BY x_data
+			
+			
+	</select>
+	
+	
+	
+</mapper>

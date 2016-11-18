@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.cmri.bpt.service.result.logsequence.mapper.LogSequenceMapper">
+	<select id="selectLogSequenceByCaseNameAndLocation"
+		parameterType="com.cmri.bpt.common.entity.LogSequenceVO" resultType="com.cmri.bpt.common.entity.LogSequenceVO">
+		select
+		case_file_name,
+		sequence_no,
+		finish_flag,
+		location
+		from
+		co_log_sequence
+		where
+		case_file_name = #{case_file_name,jdbcType=VARCHAR} and
+		location = #{location,jdbcType=CHAR}
+	</select>
+
+	<select id="selectLogSequenceByCaseFileName" parameterType="com.cmri.bpt.common.entity.LogSequenceVO"
+		resultType="com.cmri.bpt.common.entity.LogSequenceVO">
+		select
+		case_file_name,
+		sequence_no,
+		finish_flag,
+		location
+		from
+		co_log_sequence
+		where
+		case_file_name = #{case_file_name,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectnosolveLogSequenceByCaseFileName"
+		parameterType="com.cmri.bpt.common.entity.LogSequenceVO" resultType="com.cmri.bpt.common.entity.LogSequenceVO">
+		select
+		case_file_name,
+		sequence_no,
+		finish_flag,
+		location
+		from
+		co_log_sequence
+		where
+		case_file_name = #{case_file_name,jdbcType=VARCHAR} and
+		flag=0
+	</select>
+
+	<insert id="insertLogSequence" parameterType="com.cmri.bpt.common.entity.LogSequenceVO">
+		insert into
+		co_log_sequence(
+		case_file_name,
+		sequence_no,
+		finish_flag,
+		location,
+		flag
+		)
+		values(
+		#{case_file_name,jdbcType=VARCHAR},
+		#{sequence_no,jdbcType=INTEGER},
+		#{finish_flag,jdbcType=VARCHAR},
+		#{location,jdbcType=CHAR},
+		#{flag,jdbcType=INTEGER}
+		)
+
+	</insert>
+
+	<update id="updateLogSequence" parameterType="com.cmri.bpt.common.entity.LogSequenceVO">
+		update
+		co_log_sequence
+		set
+		finish_flag = #{finish_flag,jdbcType=VARCHAR},
+		sequence_no = #{sequence_no,jdbcType=INTEGER},
+		flag = #{flag,jdbcType=INTEGER}
+		where
+		case_file_name = #{case_file_name,jdbcType=VARCHAR} and
+		location = #{location,jdbcType=CHAR}
+	</update>
+
+	<update id="updatesolvedLogSequence" parameterType="com.cmri.bpt.common.entity.LogSequenceVO">
+		update
+		co_log_sequence
+		set
+		finish_flag = #{finish_flag,jdbcType=VARCHAR},
+		sequence_no = #{sequence_no,jdbcType=INTEGER},
+		flag=1
+		where
+		case_file_name = #{case_file_name,jdbcType=VARCHAR} and
+		location = #{location,jdbcType=CHAR}
+	</update>
+
+</mapper>
