@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.androidpn.server.service.UserNotFoundException;
+import org.androidpn.server.service.UserNotFoundException;//又是直接使用了androidpn的api导致耦合，所以此类要重新加架构
 import org.androidpn.server.xmpp.session.ClientSession;
 import org.androidpn.server.xmpp.session.SessionManager;
 import org.apache.log4j.Logger;
