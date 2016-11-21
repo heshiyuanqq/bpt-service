@@ -32,6 +32,9 @@ public class DatabaseTokenSessionStore extends AbstractTokenSessionStore impleme
 	static Logger heartLogger = Logger.getLogger("user." + DatabaseTokenSessionStore.class);
 	@Autowired
 	private AppTokenSessionMapper appTokenSessionMapper;
+	
+	@Autowired
+	private NotificationService notificationService;
 
 	@Override
 	public void InitSessions() {
@@ -99,11 +102,9 @@ public class DatabaseTokenSessionStore extends AbstractTokenSessionStore impleme
 
 	class TokenSessionOnlineExecutor extends Thread {
 		
-			@Autowired
-			private NotificationService notificationService;
-		
 			@Override
 			public void run() {
+				
 				
 					try {
 							Thread.sleep(OnlineCheckInterval);
@@ -119,6 +120,7 @@ public class DatabaseTokenSessionStore extends AbstractTokenSessionStore impleme
 									e.printStackTrace();
 							}
 					}*///换成rpc
+					
 					Map<String, Boolean> aliveMap = notificationService.getClientSessionAliveMap();
 					
 					
