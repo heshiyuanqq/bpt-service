@@ -39,6 +39,7 @@ public interface NotificationService {
 	
 	public List<AppTokenSession> getLiveSession(Integer  userId);
 	
-	public Map<String, Boolean>   getAliveMap();
+	public Map<String, Boolean>   getClientSessionAliveMap();
+	public void sendNotifcationsToUsers(List<Map<String, String>>  _IOMsgAndToUserMapList);
 	
 }

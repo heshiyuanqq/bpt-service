@@ -7,9 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.androidpn.server.service.UserNotFoundException;//又是直接使用了androidpn的api导致耦合，所以此类要重新加架构
-import org.androidpn.server.xmpp.session.ClientSession;
-import org.androidpn.server.xmpp.session.SessionManager;
+
+
+import org.androidpn.server.service.NotificationService;
+//import org.androidpn.server.service.UserNotFoundException;//又是直接使用了androidpn的api导致耦合，所以此类要重新加架构
+//import org.androidpn.server.xmpp.session.ClientSession;
+//import org.androidpn.server.xmpp.session.SessionManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,7 +68,7 @@ public class DatabaseTokenSessionStore extends AbstractTokenSessionStore impleme
 
 	// 过期执行器（清除过期的TokenSession）
 	class TokenSessionExpirationExecutor extends Thread {
-
+		
 		@Override
 		public void run() {
 			while (true) {
@@ -95,60 +98,50 @@ public class DatabaseTokenSessionStore extends AbstractTokenSessionStore impleme
 	private static final int OnlineCheckInterval = 60 * 1000;
 
 	class TokenSessionOnlineExecutor extends Thread {
-
-		@Override
-		public void run() {
-
-			while (true) {
-
-				try {
-					Thread.sleep(OnlineCheckInterval);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-
-				Collection<ClientSession> clientS = SessionManager.getInstance().getSessions();
-				Map<String, Boolean> aliveMap = new HashMap<String, Boolean>();
-
-				for (ClientSession s : clientS) {
-
-					try {
-
-						aliveMap.put(s.getUsername(), s.getPresence().isAvailable());
-
-					} catch (UserNotFoundException e) {
-
-						e.printStackTrace();
-					}
-				}
-
-				List<Integer> onlineIds = new ArrayList<Integer>();
-				List<Integer> offlineIds = new ArrayList<Integer>();
-
-				for (Map.Entry<String, TokenSession> tokenSessionEntry : tokenSessionMap.entrySet()) {
-
-					TokenSession tokenSession = tokenSessionEntry.getValue();
-
-					if (aliveMap.get(tokenSession.getXppId()) != null && aliveMap.get(tokenSession.getXppId())) {
-						onlineIds.add(tokenSession.getId());
-						tokenSession.setOnline(true);
-					} else {
-						offlineIds.add(tokenSession.getId());
-						tokenSession.setOnline(false);
-					}
-				}
+		
+			@Autowired
+			private NotificationService notificationService;
+		
+			@Override
+			public void run() {
 				
-				heartLogger.debug("检测心跳："+ JsonUtil.toJson(aliveMap));				
-
-				if (!onlineIds.isEmpty())
-					appTokenSessionMapper.updateOnline(true, onlineIds.toArray(new Integer[0]));
-				if (!offlineIds.isEmpty())
-					appTokenSessionMapper.updateOnline(false, offlineIds.toArray(new Integer[0]));
-
-				//
-
+					try {
+							Thread.sleep(OnlineCheckInterval);
+					} catch (InterruptedException e) {
+							e.printStackTrace();
+					}
+					/*	Collection<ClientSession> clientS = SessionManager.getInstance().getSessions();
+					Map<String, Boolean> aliveMap = new HashMap<String, Boolean>();
+					for (ClientSession s : clientS) {
+							try {
+									aliveMap.put(s.getUsername(), s.getPresence().isAvailable());
+							} catch (UserNotFoundException e) {
+									e.printStackTrace();
+							}
+					}*///换成rpc
+					Map<String, Boolean> aliveMap = notificationService.getClientSessionAliveMap();
+					
+					
+					List<Integer> onlineIds = new ArrayList<Integer>();
+					List<Integer> offlineIds = new ArrayList<Integer>();
+					for (Map.Entry<String, TokenSession> tokenSessionEntry : tokenSessionMap.entrySet()) {
+							TokenSession tokenSession = tokenSessionEntry.getValue();
+							if (aliveMap.get(tokenSession.getXppId()) != null && aliveMap.get(tokenSession.getXppId())) {
+								onlineIds.add(tokenSession.getId());
+								tokenSession.setOnline(true);
+							} else {
+								offlineIds.add(tokenSession.getId());
+								tokenSession.setOnline(false);
+							}
+					}
+					heartLogger.debug("检测心跳："+ JsonUtil.toJson(aliveMap));				
+					if (!onlineIds.isEmpty()){
+							appTokenSessionMapper.updateOnline(true, onlineIds.toArray(new Integer[0]));
+					}
+					if (!offlineIds.isEmpty()){
+							appTokenSessionMapper.updateOnline(false, offlineIds.toArray(new Integer[0]));
+					}
 			}
-		}
 	}
 
 	@Override
